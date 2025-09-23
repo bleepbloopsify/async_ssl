@@ -40,8 +40,6 @@ module Dh = Voidp (struct
 module Progress_callback =
   (val Foreign.dynamic_funptr Ctypes.(int @-> int @-> ptr void @-> returning void))
 
-module Tmp_dh_callback =
-  (val Foreign.dynamic_funptr Ctypes.(Ssl.t @-> bool @-> int @-> returning Dh.t))
 
 module Tmp_rsa_callback =
   (val Foreign.dynamic_funptr Ctypes.(Ssl.t @-> bool @-> int @-> returning Rsa.t))
@@ -486,14 +484,6 @@ module Bindings (F : Cstubs.FOREIGN) = struct
 
     let get_cipher_list =
       foreign "SSL_get_cipher_list" Ctypes.(t @-> int @-> returning string_opt)
-    ;;
-
-    module Tmp_dh_callback = Tmp_dh_callback
-
-    let set_tmp_dh_callback =
-      foreign
-        "SSL_set_tmp_dh_callback"
-        Ctypes.(t @-> Tmp_dh_callback.t @-> returning void)
     ;;
 
     let set_tmp_ecdh =
